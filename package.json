@@ -1,0 +1,42 @@
+{
+  "name": "w00100",
+  "version": "1.0.0",
+  "description": "My first app with MERN",
+  "main": "server.js",
+  "dependencies": {
+    "babel-eslint": "^10.0.3",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.0.0",
+    "cookie-session": "^1.3.3",
+    "ejs": "^2.7.1",
+    "eslint-config-node": "^4.0.0",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "express-socket.io-session": "^1.3.5",
+    "mongoose": "^5.7.7",
+    "prettier": "^1.18.2",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-flowtype": "^4.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "nodemon": "^1.19.4"
+  },
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "BL",
+  "license": "MIT"
+}
