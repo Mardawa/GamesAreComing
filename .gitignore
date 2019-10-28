@@ -101,6 +101,8 @@ public/
 **/*.back.*
 
 node_modules
+/node_modules
+package-lock.json
 bower_componets
 
 *.sublime*
