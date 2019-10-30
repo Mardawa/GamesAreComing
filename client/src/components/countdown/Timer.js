@@ -8,9 +8,12 @@ import {
   Row,
   Col
 } from 'reactstrap';
+import Fab from '@material-ui/core/Fab';
+import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
+import UpdateItemModal from '../updateItemModal';
 
-const Timer = ({ name, date }) => {
+const Timer = ({ name, date, onDeleteClick, id }) => {
   const getDuration = date => {
     const now = moment();
     date = moment(date);
@@ -18,9 +21,10 @@ const Timer = ({ name, date }) => {
   };
 
   const [duration, setDuration] = useState(getDuration(date));
+  const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
-    const intervalID = setInterval(() => setDuration(getDuration(date)), 30000);
+    const intervalID = setInterval(() => setDuration(getDuration(date)), 1000);
     return function cleanup() {
       clearInterval(intervalID);
     };
@@ -30,15 +34,49 @@ const Timer = ({ name, date }) => {
     return moment(date).format('D MMMM YYYY');
   };
 
+  const switchHover = () => {
+    setHovered();
+  };
+
   return (
-    <Card inverse style={{ maxWidth: '450px' }}>
-      <CardImg width="100%" src="http://placekitten.com/g/318/250" />
-      <CardImgOverlay style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
-        <CardTitle className="text-center">
-          <h1>{name}</h1>
-          <h2>{displayDate(date)}</h2>
+    <Card
+      className="text-center"
+      inverse
+      style={{ maxWidth: '450px', maxHeight: '250px' }}
+      onMouseEnter={setHovered}
+      onMouseLeave={switchHover}
+    >
+      <CardImg width="100%" src="http://placekitten.com/450/249" />
+      <CardImgOverlay
+        style={
+          hovered
+            ? { backgroundColor: 'rgba(240, 240, 240, 0.9)' }
+            : { backgroundColor: 'rgba(0, 0, 0, 0.6)' }
+        }
+      >
+        <CardTitle>
+          <h3>{name}</h3>
+          <h4>{displayDate(date)}</h4>
         </CardTitle>
-        <Container className="text-center">
+        {hovered && (
+          <Container>
+            <Row>
+              <Col>
+                <UpdateItemModal id={id} />
+              </Col>
+              <Col>
+                <Fab
+                  color="secondary"
+                  aria-label="delete"
+                  onClick={onDeleteClick}
+                >
+                  <DeleteIcon />
+                </Fab>
+              </Col>
+            </Row>
+          </Container>
+        )}
+        <Container>
           <Row>
             <Col>{Math.floor(moment.duration(duration).asDays())} </Col>
             <Col>

@@ -8,23 +8,25 @@ import {
   Input,
   FormGroup
 } from 'reactstrap';
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
+import moment from 'moment';
 import MomentUtils from '@date-io/moment';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
-import moment from 'moment';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
-import { addItem } from '../actions/itemActions';
+import { updateItem } from '../actions/itemActions';
 import PropTypes from 'prop-types';
 
-class ItemModal extends Component {
+class UpdateItemModal extends Component {
   state = {
     modal: false,
-    name: '',
-    r_date: moment()
+    name: this.props.item[0].name,
+    r_date: this.props.item[0].rdate,
+    id: this.props.id
   };
 
   toggle = () => {
@@ -44,29 +46,30 @@ class ItemModal extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const newItem = {
+    const rdate = moment.isMoment(this.state.r_date)
+      ? this.state.r_date.format('YYYY-MM-DD')
+      : this.state.r_date;
+
+    const updatedItem = {
       name: this.state.name,
-      rdate: this.state.r_date.format('YYYY-MM-DD')
+      rdate: rdate
     };
 
-    this.props.addItem(newItem);
+    this.props.updateItem(this.props.id, updatedItem);
     this.toggle();
   };
 
   render() {
     return (
       <div>
-        <Button
-          variant="contained"
-          color="default"
-          startIcon={<AddIcon />}
-          onClick={this.toggle}
-        >
-          Add Game
-        </Button>
+        <Fab color="primary" aria-label="edit" onClick={this.toggle}>
+          <EditIcon />
+        </Fab>
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>Add a new Game</ModalHeader>
+          <ModalHeader
+            toggle={this.toggle}
+          >{`Update ${this.props.item[0].name}`}</ModalHeader>
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
@@ -74,7 +77,7 @@ class ItemModal extends Component {
                   type="text"
                   name="name"
                   id="item"
-                  placeholder="Enter Game's Title"
+                  placeholder={this.props.item[0].name}
                   onChange={this.onChange}
                 />
                 <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -99,7 +102,7 @@ class ItemModal extends Component {
                   fullWidth={true}
                   type="submit"
                 >
-                  Add Game
+                  Update Game
                 </Button>
               </FormGroup>
             </Form>
@@ -115,16 +118,19 @@ class ItemModal extends Component {
   }
 }
 
-ItemModal.propTypes = {
-  addItem: PropTypes.func.isRequired,
-  item: PropTypes.object.isRequired
+UpdateItemModal.propTypes = {
+  updateItem: PropTypes.func.isRequired,
+  item: PropTypes.array.isRequired
 };
 
-const mapStateToProps = state => ({
-  item: state.item
-});
+function mapStateToProps(state, ownProps) {
+  const id = ownProps.id;
+  const { items } = state.item;
+  const item = items.filter(item => item._id === id);
+  return { item };
+}
 
 export default connect(
   mapStateToProps,
-  { addItem }
-)(ItemModal);
+  { updateItem }
+)(UpdateItemModal);

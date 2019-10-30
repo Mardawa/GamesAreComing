@@ -2,7 +2,8 @@ import {
   GET_ITEMS,
   ADD_ITEM,
   DELETE_ITEM,
-  ITEMS_LOADING
+  ITEMS_LOADING,
+  UPDATE_ITEM
 } from '../actions/types';
 import moment from 'moment';
 
@@ -34,6 +35,21 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: true
+      };
+    case UPDATE_ITEM:
+      const updatedItem = action.payload;
+      console.log(updatedItem);
+      return {
+        ...state,
+        items: state.items.map(item =>
+          item._id === action.id
+            ? {
+                ...item,
+                name: action.payload.item.name,
+                rdate: action.payload.item.rdate
+              }
+            : item
+        )
       };
     default:
       return state;

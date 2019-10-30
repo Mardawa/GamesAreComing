@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { Container, ListGroup, ListGroupItem } from 'reactstrap';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { connect } from 'react-redux';
 import { getItems, deleteItem } from '../actions/itemActions';
 import PropTypes from 'prop-types';
@@ -21,26 +18,16 @@ class ShoppingList extends Component {
     const { items } = this.props.item;
     return (
       <div>
-        <Container>
-          <ListGroup>
-            {items.map(({ _id, name, rdate }) => {
-              return (
-                <ListGroupItem key={_id}>
-                  <IconButton onClick={this.onDeleteClick.bind(this, _id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                  {name} {rdate}
-                </ListGroupItem>
-              );
-            })}
-          </ListGroup>
-          <br />
-        </Container>
         <Grid container justify="center" spacing={3}>
           {items.map(({ _id, name, rdate }) => {
             return (
               <Grid key={_id} item lg={4}>
-                <Timer name={name} date={rdate} />
+                <Timer
+                  name={name}
+                  date={rdate}
+                  id={_id}
+                  onDeleteClick={this.onDeleteClick.bind(this, _id)}
+                />
               </Grid>
             );
           })}
