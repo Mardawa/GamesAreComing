@@ -120,9 +120,10 @@ ItemModal.propTypes = {
   item: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({
-  item: state.item
-});
+function mapStateToProps(state) {
+  const { item } = state;
+  return { item };
+}
 
 export default connect(
   mapStateToProps,

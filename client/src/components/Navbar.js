@@ -26,7 +26,7 @@ const AppNavbar = props => {
   return (
     <div>
       <Navbar color="dark" dark expand="sm" className="mb-5">
-        <NavbarBrand href="/"> Brand Place Holder </NavbarBrand>
+        <NavbarBrand href="/">In Developement</NavbarBrand>
         <NavbarToggler onClick={toogle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
@@ -34,7 +34,7 @@ const AppNavbar = props => {
               <NavLink href="https://reactstrap.github.io/">reactstrap</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/">
+              <NavLink disabled href="/">
                 <GitHubIcon />
               </NavLink>
             </NavItem>

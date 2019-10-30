@@ -58,8 +58,8 @@ const Timer = ({ name, date, onDeleteClick, id }) => {
           <h3>{name}</h3>
           <h4>{displayDate(date)}</h4>
         </CardTitle>
-        {hovered && (
-          <Container>
+        <Container>
+          {hovered ? (
             <Row>
               <Col>
                 <UpdateItemModal id={id} />
@@ -74,31 +74,39 @@ const Timer = ({ name, date, onDeleteClick, id }) => {
                 </Fab>
               </Col>
             </Row>
-          </Container>
-        )}
-        <Container>
-          <Row>
-            <Col>{Math.floor(moment.duration(duration).asDays())} </Col>
-            <Col>
-              {moment
-                .duration(duration)
-                .hours()
-                .toString()
-                .padStart(2, '0')}
-            </Col>
-            <Col>
-              {moment
-                .duration(duration)
-                .minutes()
-                .toString()
-                .padStart(2, '0')}
-            </Col>
-          </Row>
-          <Row>
-            <Col> Days </Col>
-            <Col> Hours </Col>
-            <Col> Minutes</Col>
-          </Row>
+          ) : (
+            <br />
+          )}
+          {duration > 0 ? (
+            <Container>
+              <Row>
+                <Col>{Math.floor(moment.duration(duration).asDays())} </Col>
+                <Col>
+                  {moment
+                    .duration(duration)
+                    .hours()
+                    .toString()
+                    .padStart(2, '0')}
+                </Col>
+                <Col>
+                  {moment
+                    .duration(duration)
+                    .minutes()
+                    .toString()
+                    .padStart(2, '0')}
+                </Col>
+              </Row>
+              <Row>
+                <Col> Days </Col>
+                <Col> Hours </Col>
+                <Col> Minutes</Col>
+              </Row>
+            </Container>
+          ) : (
+            <Container>
+              <h4>The Game is out</h4>
+            </Container>
+          )}
         </Container>
       </CardImgOverlay>
     </Card>

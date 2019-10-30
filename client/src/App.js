@@ -11,16 +11,20 @@ import ItemModal from './components/itemModal';
 import { Provider } from 'react-redux';
 import store from './store';
 
+import mainLogo from './assets/logo/twitter_header_photo_2.png';
+
 function App() {
   return (
     <Provider store={store}>
       <div className="App">
         <AppNavbar />
-        <Container>
-          <h1>Games are coming !</h1>
-          <ItemModal />
+        <Container className="text-center">
+          <img width="500px" src={mainLogo} alt="logo" />
+          <br />
           <br />
           <ShoppingList />
+          <br />
+          <ItemModal />
         </Container>
       </div>
     </Provider>
