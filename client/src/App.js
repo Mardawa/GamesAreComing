@@ -19,7 +19,7 @@ function App() {
       <div className="App">
         <AppNavbar />
         <Container className="text-center">
-          <img width="500px" src={mainLogo} alt="logo" />
+          <img className="logo" src={mainLogo} alt="logo" />
           <br />
           <br />
           <ShoppingList />
