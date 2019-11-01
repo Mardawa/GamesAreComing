@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   Collapse,
   Navbar,
@@ -6,15 +8,15 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
-
-import GitHubIcon from '@material-ui/icons/GitHub';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import RegisterModal from './auth/RegisterModal';
+import LoginModal from './auth/LoginModal';
+import Logout from './auth/Logout';
 
 const AppNavbar = props => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,32 +25,43 @@ const AppNavbar = props => {
     setIsOpen(!isOpen);
   };
 
+  const { isAuthenticated, user } = props.auth;
+
+  const authLinks = (
+    <Fragment>
+      <UncontrolledDropdown nav inNavbar>
+        <DropdownToggle nav caret>
+          <AccountCircleIcon /> {user && user.name}
+        </DropdownToggle>
+        <DropdownMenu right>
+          <DropdownItem disabled>Your profile</DropdownItem>
+          <DropdownItem disabled>Settings</DropdownItem>
+          <DropdownItem divider />
+          <Logout />
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    </Fragment>
+  );
+
+  const guestLinks = (
+    <Fragment>
+      <NavItem>
+        <RegisterModal />
+      </NavItem>
+      <NavItem>
+        <LoginModal />
+      </NavItem>
+    </Fragment>
+  );
+
   return (
     <div>
       <Navbar color="dark" dark expand="sm" className="mb-5">
-        <NavbarBrand href="/">In Developement</NavbarBrand>
+        <NavbarBrand href="/">In Developement - Demo page </NavbarBrand>
         <NavbarToggler onClick={toogle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
-            <NavItem>
-              <NavLink href="https://reactstrap.github.io/">reactstrap</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink disabled href="/">
-                <GitHubIcon />
-              </NavLink>
-            </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                <AccountCircleIcon />
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>Your profile</DropdownItem>
-                <DropdownItem>Settings</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>Sign out</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            {isAuthenticated ? authLinks : guestLinks}
           </Nav>
         </Collapse>
       </Navbar>
@@ -56,4 +69,16 @@ const AppNavbar = props => {
   );
 };
 
-export default AppNavbar;
+AppNavbar.propTypes = {
+  auth: PropTypes.object.isRequired
+};
+
+function mapStateToProps(state) {
+  const { auth } = state;
+  return { auth };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(AppNavbar);

@@ -18,7 +18,7 @@ import {
 } from '@material-ui/pickers';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import { updateItem } from '../actions/itemActions';
+import { updateItem } from '../../actions/itemActions';
 import PropTypes from 'prop-types';
 
 class UpdateItemModal extends Component {
@@ -62,9 +62,15 @@ class UpdateItemModal extends Component {
   render() {
     return (
       <div>
-        <Fab color="primary" aria-label="edit" onClick={this.toggle}>
-          <EditIcon />
-        </Fab>
+        {this.props.disabled ? (
+          <Fab disabled color="primary" aria-label="edit" onClick={this.toggle}>
+            <EditIcon />
+          </Fab>
+        ) : (
+          <Fab color="primary" aria-label="edit" onClick={this.toggle}>
+            <EditIcon />
+          </Fab>
+        )}
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader

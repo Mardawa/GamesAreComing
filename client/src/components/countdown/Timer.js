@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   Card,
   CardTitle,
@@ -11,9 +13,9 @@ import {
 import Fab from '@material-ui/core/Fab';
 import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
-import UpdateItemModal from '../updateItemModal';
+import UpdateItemModal from './updateItemModal';
 
-const Timer = ({ name, date, onDeleteClick, id }) => {
+const Timer = ({ name, date, onDeleteClick, id, isAuthenticated }) => {
   const getDuration = date => {
     const now = moment();
     date = moment(date);
@@ -42,11 +44,19 @@ const Timer = ({ name, date, onDeleteClick, id }) => {
     <Card
       className="text-center"
       inverse
-      style={{ maxWidth: '450px', maxHeight: '250px' }}
+      style={{
+        minWidth: '0px',
+        maxWidth: '450px',
+        height: '250px'
+      }}
       onMouseEnter={setHovered}
       onMouseLeave={switchHover}
     >
-      <CardImg width="100%" src="http://placekitten.com/450/249" />
+      <CardImg
+        width="100%"
+        height="100%"
+        src="http://placekitten.com/1920/1080"
+      />
       <CardImgOverlay
         style={
           hovered
@@ -62,16 +72,31 @@ const Timer = ({ name, date, onDeleteClick, id }) => {
           {hovered ? (
             <Row>
               <Col>
-                <UpdateItemModal id={id} />
+                {isAuthenticated ? (
+                  <UpdateItemModal id={id} />
+                ) : (
+                  <UpdateItemModal id={id} disabled={true} />
+                )}
               </Col>
               <Col>
-                <Fab
-                  color="secondary"
-                  aria-label="delete"
-                  onClick={onDeleteClick}
-                >
-                  <DeleteIcon />
-                </Fab>
+                {isAuthenticated ? (
+                  <Fab
+                    color="secondary"
+                    aria-label="delete"
+                    onClick={onDeleteClick}
+                  >
+                    <DeleteIcon />
+                  </Fab>
+                ) : (
+                  <Fab
+                    disabled
+                    color="secondary"
+                    aria-label="delete"
+                    onClick={onDeleteClick}
+                  >
+                    <DeleteIcon />
+                  </Fab>
+                )}
               </Col>
             </Row>
           ) : (
@@ -113,4 +138,16 @@ const Timer = ({ name, date, onDeleteClick, id }) => {
   );
 };
 
-export default Timer;
+Timer.propTypes = {
+  isAuthenticated: PropTypes.bool
+};
+
+function mapStateToProps(state) {
+  const { isAuthenticated } = state.auth;
+  return { isAuthenticated };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(Timer);

@@ -6,16 +6,21 @@ import {
   ITEMS_LOADING,
   UPDATE_ITEM
 } from './types';
+import { tokenConfig } from './authActions';
+import { returnErrors } from './errorActions';
 
 export const getItems = () => dispatch => {
-  dispatch(setItemLoading());
+  dispatch({ type: ITEMS_LOADING });
   axios
     .get('/api/items')
-    .then(res => dispatch({ type: GET_ITEMS, payload: res.data }));
+    .then(res => dispatch({ type: GET_ITEMS, payload: res.data }))
+    .catch(err =>
+      dispatch(returnErrors(err.response.date, err.response.status))
+    );
 };
 
-export const deleteItem = id => dispatch => {
-  axios.delete(`/api/items/${id}`).then(res =>
+export const deleteItem = id => (dispatch, getState) => {
+  axios.delete(`/api/items/${id}`, tokenConfig(getState)).then(res =>
     dispatch({
       type: DELETE_ITEM,
       payload: id
@@ -23,8 +28,8 @@ export const deleteItem = id => dispatch => {
   );
 };
 
-export const addItem = item => dispatch => {
-  axios.post('/api/items', item).then(res =>
+export const addItem = item => (dispatch, getState) => {
+  axios.post('/api/items', item, tokenConfig(getState)).then(res =>
     dispatch({
       type: ADD_ITEM,
       payload: res.data
@@ -32,18 +37,11 @@ export const addItem = item => dispatch => {
   );
 };
 
-export const setItemLoading = () => {
-  return {
-    type: ITEMS_LOADING
-  };
-};
-
-export const updateItem = (id, item) => dispatch => {
-  axios.post(`/api/items/update/${id}`, item).then(res =>
+export const updateItem = (id, item) => (dispatch, getState) => {
+  axios.post(`/api/items/update/${id}`, item, tokenConfig(getState)).then(res =>
     dispatch({
       type: UPDATE_ITEM,
-      id: id,
-      payload: res.data
+      payload: { item: res.data, id }
     })
   );
 };

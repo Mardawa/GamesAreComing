@@ -17,7 +17,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
-import { addItem } from '../actions/itemActions';
+import { addItem } from '../../actions/itemActions';
 import PropTypes from 'prop-types';
 
 class ItemModal extends Component {
@@ -54,16 +54,28 @@ class ItemModal extends Component {
   };
 
   render() {
+    const { isAuthenticated } = this.props;
     return (
       <div>
-        <Button
-          variant="contained"
-          color="default"
-          startIcon={<AddIcon />}
-          onClick={this.toggle}
-        >
-          Add Game
-        </Button>
+        {isAuthenticated ? (
+          <Button
+            variant="contained"
+            color="default"
+            startIcon={<AddIcon />}
+            onClick={this.toggle}
+          >
+            Add Game
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="default"
+            startIcon={<AddIcon />}
+            disabled
+          >
+            Add Game
+          </Button>
+        )}
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Add a new Game</ModalHeader>
@@ -122,7 +134,8 @@ ItemModal.propTypes = {
 
 function mapStateToProps(state) {
   const { item } = state;
-  return { item };
+  const { isAuthenticated } = state.auth;
+  return { item, isAuthenticated };
 }
 
 export default connect(

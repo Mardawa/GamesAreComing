@@ -37,16 +37,14 @@ export default function(state = initialState, action) {
         loading: true
       };
     case UPDATE_ITEM:
-      const updatedItem = action.payload;
-      console.log(updatedItem);
       return {
         ...state,
         items: state.items.map(item =>
-          item._id === action.id
+          item._id === action.payload.id
             ? {
                 ...item,
-                name: action.payload.item.name,
-                rdate: action.payload.item.rdate
+                name: action.payload.item.item.name,
+                rdate: action.payload.item.item.rdate
               }
             : item
         )

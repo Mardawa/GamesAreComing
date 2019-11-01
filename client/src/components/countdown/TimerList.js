@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getItems, deleteItem } from '../actions/itemActions';
+import { getItems, deleteItem } from '../../actions/itemActions';
 import PropTypes from 'prop-types';
-import Timer from './countdown/Timer';
+import Timer from './Timer';
 import Grid from '@material-ui/core/Grid';
 import { Spinner } from 'reactstrap';
 
@@ -20,10 +20,10 @@ class ShoppingList extends Component {
     return (
       <div>
         {!loading ? (
-          <Grid container justify="center" spacing={3}>
+          <Grid container fluid="true" justify="center" spacing={3}>
             {items.map(({ _id, name, rdate }) => {
               return (
-                <Grid key={_id} item lg={4}>
+                <Grid key={_id} item lg>
                   <Timer
                     name={name}
                     date={rdate}
