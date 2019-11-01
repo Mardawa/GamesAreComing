@@ -45,7 +45,7 @@ const Timer = ({ name, date, onDeleteClick, id, isAuthenticated }) => {
       className="text-center"
       inverse
       style={{
-        minWidth: '0px',
+        minWidth: '450px',
         maxWidth: '450px',
         height: '250px'
       }}
