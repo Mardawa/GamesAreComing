@@ -48,7 +48,6 @@ class ItemModal extends Component {
       name: this.state.name,
       rdate: this.state.r_date.format('YYYY-MM-DD')
     };
-
     this.props.addItem(newItem);
     this.toggle();
   };

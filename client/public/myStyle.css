@@ -1,3 +1,4 @@
 .app {
-    background-color: #364F6B;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(54, 80, 107, 1) 50%, rgba(62, 193, 201, 1) 100%);
 }

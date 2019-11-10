@@ -12,7 +12,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/authActions';
 
-import mainLogo from './assets/logo/twitter_header_photo_2.png';
+import mainLogo from './assets/logo/Image1.png';
 
 function App() {
   useEffect(() => {
