@@ -57,7 +57,7 @@ const AppNavbar = props => {
   return (
     <div>
       <Navbar color="dark" dark expand="sm" className="mb-5">
-        <NavbarBrand href="/">In Developement - Demo page </NavbarBrand>
+        <NavbarBrand href="/">baoluu.ch</NavbarBrand>
         <NavbarToggler onClick={toogle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
@@ -78,7 +78,4 @@ function mapStateToProps(state) {
   return { auth };
 }
 
-export default connect(
-  mapStateToProps,
-  null
-)(AppNavbar);
+export default connect(mapStateToProps, null)(AppNavbar);

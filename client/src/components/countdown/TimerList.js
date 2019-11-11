@@ -21,12 +21,13 @@ class ShoppingList extends Component {
       <div>
         {!loading ? (
           <Grid container fluid="true" justify="center" spacing={3}>
-            {items.map(({ _id, name, rdate }) => {
+            {items.map(({ _id, name, rdate, filePath }) => {
               return (
-                <Grid key={_id} item lg>
+                <Grid key={_id} item xs={12} sm={6} md={6} lg={4} xl={3}>
                   <Timer
                     name={name}
                     date={rdate}
+                    filePath={filePath}
                     id={_id}
                     onDeleteClick={this.onDeleteClick.bind(this, _id)}
                   />
@@ -56,7 +57,4 @@ function mapStateToProps(state) {
   return { item, loading };
 }
 
-export default connect(
-  mapStateToProps,
-  { getItems, deleteItem }
-)(ShoppingList);
+export default connect(mapStateToProps, { getItems, deleteItem })(ShoppingList);

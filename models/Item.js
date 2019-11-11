@@ -12,6 +12,10 @@ const itemSchema = new Schema({
     type: String,
     required: true
   },
+  filePath: {
+    type: String,
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now

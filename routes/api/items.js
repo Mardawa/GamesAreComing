@@ -21,13 +21,15 @@ router.get('/', (req, res) => {
 router.post('/', auth, (req, res) => {
   const newItem = new Item({
     name: req.body.name,
-    rdate: req.body.rdate
+    rdate: req.body.rdate,
+    filePath: req.body.filePath
   });
 
+  console.log(newItem.filePath);
   newItem
     .save()
     .then(item => res.json(item))
-    .catch(err => res.status(401).json({ err }));
+    .catch(err => console.log(err));
 });
 
 // @route DELETE api/items/:id

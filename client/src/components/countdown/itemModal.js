@@ -13,18 +13,23 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
-import moment from 'moment';
-import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
+import { DropzoneArea } from 'material-ui-dropzone';
+import moment from 'moment';
+import { connect } from 'react-redux';
 import { addItem } from '../../actions/itemActions';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 class ItemModal extends Component {
   state = {
     modal: false,
     name: '',
-    r_date: moment()
+    r_date: moment(),
+    files: [],
+    file: null,
+    filePath: 'noPath'
   };
 
   toggle = () => {
@@ -41,14 +46,47 @@ class ItemModal extends Component {
     this.setState({ r_date: date });
   };
 
-  onSubmit = e => {
+  onFileChange = files => {
+    this.setState({
+      files: files
+    });
+    this.setState({
+      file: files[0]
+    });
+  };
+
+  onSubmit = async e => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('file', this.state.file);
+
+    try {
+      const res = await axios.post('/api/images/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      const { filePath } = res.data;
+      this.setState({
+        filePath: filePath
+      });
+    } catch (err) {
+      if (err.response.status === 500) {
+        console.log('There was a problem with the server');
+      } else {
+        console.log(err.response.data.msg);
+      }
+    }
 
     const newItem = {
       name: this.state.name,
-      rdate: this.state.r_date.format('YYYY-MM-DD')
+      rdate: this.state.r_date.format('YYYY-MM-DD'),
+      filePath: this.state.filePath
     };
+
     this.props.addItem(newItem);
+
     this.toggle();
   };
 
@@ -103,6 +141,14 @@ class ItemModal extends Component {
                     }}
                   />
                 </MuiPickersUtilsProvider>
+
+                <DropzoneArea
+                  onChange={this.onFileChange}
+                  acceptedFiles={['.jpg', '.png']}
+                  filesLimit={1}
+                  showPreviewsInDropzone={true}
+                />
+
                 <Button
                   variant="contained"
                   color="primary"
@@ -128,16 +174,12 @@ class ItemModal extends Component {
 
 ItemModal.propTypes = {
   addItem: PropTypes.func.isRequired,
-  item: PropTypes.object.isRequired
+  isAuthenticated: PropTypes.bool
 };
 
 function mapStateToProps(state) {
-  const { item } = state;
   const { isAuthenticated } = state.auth;
-  return { item, isAuthenticated };
+  return { isAuthenticated };
 }
 
-export default connect(
-  mapStateToProps,
-  { addItem }
-)(ItemModal);
+export default connect(mapStateToProps, { addItem })(ItemModal);

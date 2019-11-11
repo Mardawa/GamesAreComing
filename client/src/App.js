@@ -23,12 +23,13 @@ function App() {
     <Provider store={store}>
       <div className="App">
         <AppNavbar />
-        <Container className="text-center">
-          <img className="logo" src={mainLogo} alt="logo" />
-          <br />
-          <br />
-          <TimerList />
-          <br />
+        <Container className="text-center mw-100 px-auto">
+          <div className="pb-1 mb-1">
+            <img className="logo" src={mainLogo} alt="logo" />
+          </div>
+          <div className="pb-1 mb-3">
+            <TimerList />
+          </div>
           <ItemModal />
         </Container>
       </div>
