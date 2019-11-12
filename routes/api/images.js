@@ -66,15 +66,16 @@ router.post('/upload', (req, res) => {
 router.get('/:id', (req, res) => {
   const { id } = req.params;
   Image.findById(id)
-    .then(item =>
+    .then(item => {
       fs.writeFile(`${process.cwd()}/uploads/${id}.jpg`, item.image, error => {
         if (error) {
           throw error;
         }
-      })
-    )
+      });
+    })
     .then(res.sendFile(`${process.cwd()}/uploads/${id}.jpg`))
-    .catch(err => res.json(err));
+    // .then(res.sendfile(`${process.cwd()}/uploads/placeholder.jpg`))
+    .catch(err => console.log(err));
 });
 
 module.exports = router;
