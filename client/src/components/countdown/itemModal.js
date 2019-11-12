@@ -144,7 +144,7 @@ class ItemModal extends Component {
 
                 <DropzoneArea
                   onChange={this.onFileChange}
-                  acceptedFiles={['.jpg', '.png']}
+                  acceptedFiles={['.jpg']}
                   filesLimit={1}
                   showPreviewsInDropzone={true}
                 />

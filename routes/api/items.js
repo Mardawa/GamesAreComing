@@ -25,7 +25,6 @@ router.post('/', auth, (req, res) => {
     filePath: req.body.filePath
   });
 
-  console.log(newItem.filePath);
   newItem
     .save()
     .then(item => res.json(item))

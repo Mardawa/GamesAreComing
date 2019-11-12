@@ -15,7 +15,7 @@ app.use(fileUpload());
 // DB Config
 const db = config.get('mongoURI');
 
-// Connecto to Mongo
+// Connect to to Mongo
 mongoose
   .connect(db, {
     useNewUrlParser: true,
