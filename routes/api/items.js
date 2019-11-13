@@ -22,6 +22,7 @@ router.post('/', auth, (req, res) => {
   const newItem = new Item({
     name: req.body.name,
     rdate: req.body.rdate,
+    soon: req.body.soon,
     filePath: req.body.filePath
   });
 

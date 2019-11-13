@@ -21,12 +21,13 @@ class ShoppingList extends Component {
       <div>
         {!loading ? (
           <Grid container fluid="true" justify="center" spacing={3}>
-            {items.map(({ _id, name, rdate, filePath }) => {
+            {items.map(({ _id, name, rdate, soon, filePath }) => {
               return (
                 <Grid key={_id} item xs={12} sm={6} md={6} lg={4} xl={3}>
                   <Timer
                     name={name}
                     date={rdate}
+                    soon={soon}
                     filePath={filePath}
                     id={_id}
                     onDeleteClick={this.onDeleteClick.bind(this, _id)}

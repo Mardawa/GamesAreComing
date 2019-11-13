@@ -25,7 +25,7 @@ const displayDate = date => {
   return moment(date).format('D MMMM YYYY');
 };
 
-const Timer = ({ name, date, onDeleteClick, id, filePath }) => {
+const Timer = ({ name, date, soon, onDeleteClick, id, filePath }) => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const [duration, setDuration] = useState(getDuration(date));
   const [hovered, setHovered] = useState(false);
@@ -64,7 +64,7 @@ const Timer = ({ name, date, onDeleteClick, id, filePath }) => {
         >
           <CardTitle>
             <h3>{name}</h3>
-            <h4>{displayDate(date)}</h4>
+            <h4>{!soon ? displayDate(date) : <br />}</h4>
           </CardTitle>
           <Container>
             {hovered ? (
@@ -100,7 +100,7 @@ const Timer = ({ name, date, onDeleteClick, id, filePath }) => {
             ) : (
               <br />
             )}
-            {duration > 0 ? (
+            {!soon && duration > 0 ? (
               <Container className="font-weight-bold">
                 <Row>
                   <Col>{Math.floor(moment.duration(duration).asDays())} </Col>
@@ -127,7 +127,7 @@ const Timer = ({ name, date, onDeleteClick, id, filePath }) => {
               </Container>
             ) : (
               <Container>
-                <h4>The Game is out</h4>
+                <h4>{!soon ? 'The game is out' : 'Coming soon'}</h4>
               </Container>
             )}
           </Container>
