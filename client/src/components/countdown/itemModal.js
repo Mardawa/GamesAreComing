@@ -13,8 +13,11 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
+import Grid from '@material-ui/core/Grid';
 import { DropzoneArea } from 'material-ui-dropzone';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -26,6 +29,7 @@ class ItemModal extends Component {
   state = {
     modal: false,
     name: '',
+    soon: false,
     r_date: moment(),
     files: [],
     file: null,
@@ -35,6 +39,13 @@ class ItemModal extends Component {
   toggle = () => {
     this.setState({
       modal: !this.state.modal
+    });
+  };
+
+  onCheckToggle = () => {
+    this.setState({
+      soon: !this.state.soon,
+      r_date: moment('31/12/2099', 'DD-MM-YYYY')
     });
   };
 
@@ -82,6 +93,7 @@ class ItemModal extends Component {
     const newItem = {
       name: this.state.name,
       rdate: this.state.r_date.format('YYYY-MM-DD'),
+      soon: this.state.soon,
       filePath: this.state.filePath
     };
 
@@ -126,21 +138,39 @@ class ItemModal extends Component {
                   placeholder="Enter Game's Title"
                   onChange={this.onChange}
                 />
-                <MuiPickersUtilsProvider utils={MomentUtils}>
-                  <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="DD/MM/YYYY"
-                    margin="normal"
-                    id="date-picker-inline"
-                    label="Release date"
-                    value={this.state.r_date}
-                    onChange={this.onDateChange}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date'
-                    }}
-                  />
-                </MuiPickersUtilsProvider>
+
+                <Grid contrainer justify="center">
+                  <Grid item sm>
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                      <KeyboardDatePicker
+                        disableToolbar
+                        variant="inline"
+                        format="DD/MM/YYYY"
+                        margin="normal"
+                        id="date-picker-inline"
+                        label="Release date"
+                        value={this.state.r_date}
+                        onChange={this.onDateChange}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date'
+                        }}
+                      />
+                    </MuiPickersUtilsProvider>
+                  </Grid>
+                  <Grid item sm>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={this.state.soon}
+                          onChange={this.onCheckToggle}
+                          value="soon"
+                          color="secondary"
+                        />
+                      }
+                      label='Comming "soon"'
+                    />
+                  </Grid>
+                </Grid>
 
                 <DropzoneArea
                   onChange={this.onFileChange}
